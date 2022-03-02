@@ -76,7 +76,7 @@ namespace ft
 		}
 	private:
 		iterator_type	_ite;
-    }
+    };
 
     template <class iterator>
     bool operator==

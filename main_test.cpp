@@ -1,7 +1,10 @@
 #include "Vector.hpp"
+#include <vector>
 
 int main(void)
 {
-    ft::vector<int>(4, 25);
+
+    std::vector<int>	a1(4, 25);
+    ft::vector<int> a2(4, 25);
     return (0);
 }

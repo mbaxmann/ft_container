@@ -3,9 +3,11 @@
 
 #include <memory>
 #include <cstddef>
+#include <stdexcept>
 #include "iterator/iterator.hpp"
 #include "iterator/iterator_traits.hpp"
 #include "iterator/reverse_iterator.hpp"
+#include "utility/enable_if.hpp"
 
 namespace   ft
 {
@@ -18,14 +20,14 @@ namespace   ft
 		 */
 		typedef	T			    value_type;
 		typedef Allocator		    allocator_type;
-		typedef reference		    allocator_type::reference;
-		typedef	const_reference		    allocator_type::const_reference;
-		typedef	pointer			    allocator_type::pointer;
-		typedef const_pointer		    allocator_type::const_pointer;
+		typedef typename allocator_type::reference   reference;
+		typedef	typename allocator_type::const_reference	    const_reference;
+		typedef	typename allocator_type::pointer		    pointer;
+		typedef typename allocator_type::const_pointer	    const_pointer;
 		typedef ft::iterator<ft::random_access_iterator_tag, value_type>    iterator;
-		typedef ft::iterator<ft::random_access_iterator_tag, const value_type>	iterator;
+		typedef ft::iterator<ft::random_access_iterator_tag, const value_type>	const_iterator;
 		typedef ft::reverse_iterator<iterator>		reverse_iterator;
-		typedef	ft_reverse_iterator<const_iterator>	const_reverse_iterator;
+		typedef	ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 		typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
 		typedef typename    allocator_type::size_type	size_type;
 		/*
@@ -34,13 +36,13 @@ namespace   ft
 		explicit vector(const allocator_type &alloc = allocator_type()) :
 		    _alloc(alloc),
 		    _M_start(NULL),
-		    _M_finish(NULL),
+		    _M_end(NULL),
 		    _M_end_of_storage(NULL) {}
 
 		explicit vector(size_type n, const value_type &val = value_type(),
 				const allocator_type &alloc = allocator_type()) : _alloc(alloc) {
 		    _M_start = _alloc.allocate(n);
-		    _M_end_of_storage = _start + n;
+		    _M_end_of_storage = _M_start + n;
 		    _M_end = _M_start;
 		    while (n)
 		    {
@@ -52,20 +54,19 @@ namespace   ft
 
 		template <class InputIterator>
 		vector(InputIterator first, InputIterator last,
-			const allocator_type &alloc = allocator_type()) : _alloc(alloc) {
-		    typedef typename ft::is_integral<InputIterator>::type   integral;
-		    ft::iterator tmp = first;
-		    difference_type n = 0;
-		    while (tmp != last)
-			n++;
+			const allocator_type &alloc = allocator_type(),
+			typename ft::enable_if
+			<!ft::is_integral<InputIterator>::value, InputIterator>::type * = NULL) 
+			: _alloc(alloc) {
+		    difference_type n = dist(first, last);
 		    _M_start = _alloc.allocate(n);
 		    _M_end = _M_start;
 		    _M_end_of_storage = _M_start + n;
 		    while (n)
 		    {
-			_alloc.construct(_M_end, *first);
-			first++;
-			_M_end++;
+			_alloc.construct(_M_end, (*first));
+			++first;
+			++_M_end;
 			n--;
 		    }
 		}
@@ -82,7 +83,7 @@ namespace   ft
 		 */
 		~vector() {
 		    this->clear();
-		    _alloc.dealloctae(_start, this->capacity());
+		    _alloc.deallocate(_M_start, this->capacity());
 		}
 
 		vector	&operator=(const vector &x) {
@@ -222,16 +223,9 @@ namespace   ft
 		 */
 		template <class InputIterator>
 		void assign(InputIterator first, InputIterator last) {
-		    typedef typename ft::is_integral<InputIterator>::type integral;
-		    size_type	length = 0;
-		    ft::iterator    tmp = first;
+		    size_type	length = dist(first, last);
 
 		    this->clear();
-		    while (&(*tmp) != &(*last))
-		    {
-			++tmp;
-			length++;
-		    }
 		    if (length <= size_type(_M_end_of_storage - _M_start))
 		    {
 			while (*first != *last)
@@ -333,10 +327,10 @@ namespace   ft
 			_M_end_of_storage_new = _M_start_new + capacity_new;
 
 			for (size_type i = 0; i < len; i++)
-			    _alloc.construct(_M_start_new + i, *(_start + i));
+			    _alloc.construct(_M_start_new + i, *(_M_start + i));
 			_alloc.construct(_M_start_new + len, val);
 			for (size_type j = 0; j < this->size() - len; j++)
-			    _alloc.construct(_M_end_new - j - 1, *(_end - j - 1));
+			    _alloc.construct(_M_end_new - j - 1, *(_M_end - j - 1));
 			for (size_type k = 0; k < this->size(); k++)
 			    _alloc.destroy(_M_start + k);
 			if (_M_start)
@@ -374,7 +368,7 @@ namespace   ft
 			int capacity_new;
 
 			capacity_new = this->size() + n;
-			_M_start_new = _alloc.allocate(capcity_new);
+			_M_start_new = _alloc.allocate(capacity_new);
 			_M_end_new = _M_start_new + this->size() + n;
 			_M_end_of_storage = _M_start_new + capacity_new;
 			for (int i = 0; i < (&(*position) - _M_start); i++)
@@ -385,7 +379,7 @@ namespace   ft
 			    _alloc.construct(_M_end_new - k - 1, *(_M_end - k - 1));
 			for (size_type l = 0; l < this->size(); l++)
 			    _alloc.destroy(_M_start + l);
-			_alloc.deallcate(_start, this->capacity());
+			_alloc.deallcate(_M_start, this->capacity());
 			_M_start = _M_start_new;
 			_M_end = _M_end_new;
 			_M_end_of_storage = _M_end_of_storage_new;
@@ -427,8 +421,8 @@ namespace   ft
 			    _M_end_of_storage_new = _M_end_new;
 			    for (int i = 0; i < &(*position) - _M_start; i++)
 				_alloc.construct(_M_start_new + i, *(_M_start + i));
-			    for (int j = 0; &(*firtst) != &(*last); first++, j++)
-				_alloc.construct(_M_star_new + len + j, *first);
+			    for (int j = 0; &(*first) != &(*last); first++, j++)
+				_alloc.construct(_M_start_new + len + j, *first);
 			    for (size_type k = 0; k < this->size() - len; k++)
 				_alloc.construct(_M_start_new + len + ite_len + k, *(_M_start + len + k));
 			    for (size_type l = 0; l < this->size(); l++)
@@ -451,7 +445,7 @@ namespace   ft
 			    for (int i = 0; i < _M_end - &(*position) - 1; i++)
 			    {
 				_alloc.construct(&(*position) + i, *position + i + 1);
-				_alloc.destory(&(*position) + i ++ 1);
+				_alloc.destory(&(*position) + i + 1);
 			    }
 			}
 			--_M_end;
@@ -510,6 +504,17 @@ namespace   ft
 		pointer		    _M_end;
 		pointer		    _M_end_of_storage;
 		allocator_type	    _alloc;
+
+		template<class InputIterator>
+		difference_type dist(InputIterator first, InputIterator last) {
+		    difference_type ret = 0;
+		    while (first != last)
+		    {
+			++first;
+			++ret;
+		    }
+		    return (ret);
+		}
     };
 
     template<class T, class Alloc>
@@ -518,7 +523,7 @@ namespace   ft
 	typename ft::vector<T>::const_iterator first2 = rhs.begin();
 	if (lhs.size() != rhs.size())
 	    return (false);
-	while (first1 != lsh.end())
+	while (first1 != lhs.end())
 	{
 	    if (first2 == rhs.end() || *first2 != *first1)
 		return false;
@@ -537,7 +542,7 @@ namespace   ft
     bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
 	typename ft::vector<T>::const_iterator first1 = lhs.begin();
 	typename ft::vector<T>::const_iterator first2 = rhs.begin();
-	while (first1 != lsh.end())
+	while (first1 != lhs.end())
 	{
 	    if (first2 == rhs.end() || *first2 < *first1)
 		return false;

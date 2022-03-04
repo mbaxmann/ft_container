@@ -390,6 +390,7 @@ namespace   ft
 			_M_end = _M_end_new;
 			_M_end_of_storage = _M_end_of_storage_new;
 		    }
+		}
 
 		    template<class InputIterator>
 		    void insert(iterator position, InputIterator first, InputIterator last) {
@@ -504,7 +505,6 @@ namespace   ft
 		    allocator_type  get_allocator() const {
 			return (_alloc);
 		    }
-		}
 	    private:
 		pointer		    _M_start;
 		pointer		    _M_end;

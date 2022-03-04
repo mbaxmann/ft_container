@@ -2,6 +2,6 @@
 
 int main(void)
 {
-    ft::vector(4, 25);
+    ft::vector<int>(4, 25);
     return (0);
 }

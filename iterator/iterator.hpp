@@ -35,7 +35,7 @@ namespace ft
 		iterator(void) : _ptr(NULL) {}
 		iterator(pointer ptr) : _ptr(ptr) {}
 		iterator(const iterator &cp) : _ptr(cp._ptr) {}
-		virtual ~random_access_iterator(void) {}
+		virtual ~iterator(void) {}
 		iterator &operator=(const iterator &cp) {
 		    if (this == &cp)
 			return (*this);
@@ -55,7 +55,7 @@ namespace ft
 		    return (*_ptr);
 		}
 		pointer	operator->(void) {
-		    return (&(this->operator*());
+		    return (&(this->operator*()));
 		}
 		iterator &operator++(void) {
 		    _ptr++;
@@ -96,51 +96,51 @@ namespace ft
 		pointer	_ptr;
     };
     
-    template<typename T>
-    typename ft::iterator<T>::difference_type operator==
-    (const ft::iterator<T> first, const ft::iterator<T> second) {
+    template<class Category, typename T>
+    typename ft::iterator<Category, T>::difference_type operator==
+    (const ft::iterator<Category, T> first, const ft::iterator<Category, T> second) {
 	return (first.getPtr() == second.getPtr());
     }
 
-    template<typename T>
-    typename ft::iterator<T>::difference_type operator!=
-    (const ft::iterator<T> first, const ft::iterator<T> second) {
-	return (first.getPtr() != second.getPtr())
+    template<class Category, typename T>
+    typename ft::iterator<Category, T>::difference_type operator!=
+    (const ft::iterator<Category, T> first, const ft::iterator<Category, T> second) {
+	return (first.getPtr() != second.getPtr());
     }    
     
-    template<typename T>
-    typename ft::iterator<T>::difference_type operator<
-    (const ft::iterator<T> first, const ft::iterator<T> second) {
-	return (first.getPtr() < second.getPtr())
+    template<class Category, typename T>
+    typename ft::iterator<Category, T>::difference_type operator<
+    (const ft::iterator<Category, T> first, const ft::iterator<Category, T> second) {
+	return (first.getPtr() < second.getPtr());
     }
     
-    template<typename T>
-    typename ft::iterator<T>::difference_type operator>
-    (const ft::iterator<T> first, const ft::iterator<T> second) {
-	return (first.getPtr() > second.getPtr())
+    template<class Category, typename T>
+    typename ft::iterator<Category, T>::difference_type operator>
+    (const ft::iterator<Category, T> first, const ft::iterator<Category, T> second) {
+	return (first.getPtr() > second.getPtr());
     }
 
-    template<typename T>
-    typename ft::iterator<T>::difference_type operator<=
-    (const ft::iterator<T> first, const ft::iterator<T> second) {
-	return (first.getPtr() <= second.getPtr())
+    template<class Category, typename T>
+    typename ft::iterator<Category, T>::difference_type operator<=
+    (const ft::iterator<Category, T> first, const ft::iterator<Category, T> second) {
+	return (first.getPtr() <= second.getPtr());
     }
 
-    template<typename T>
-    typename ft::iterator<T>::difference_type operator>=
-    (const ft::iterator<T> first, const ft::iterator<T> second) {
-	return (first.getPtr() >= second.getPtr())
+    template<class Category, typename T>
+    typename ft::iterator<Category, T>::difference_type operator>=
+    (const ft::iterator<Category, T> first, const ft::iterator<Category, T> second) {
+	return (first.getPtr() >= second.getPtr());
     }
 
-    template<typename T>
-    ft::iterator<T> operator+
-    (typename ft::iterator<T>::diference_type i, typename ft::iterator<T> &ite) {
+    template<class Category, typename T>
+    ft::iterator<Category, T> operator+
+    (typename ft::iterator<Category, T>::diference_type i, typename ft::iterator<Category, T> &ite) {
 	return (&(*ite) + i);
     }
 
-    template<typename T>
-    typename ft::iterator<T>::difference_type operator-
-    (const ft::iterator<T> first, const ft::iterator<T> second) {
+    template<class Category, typename T>
+    typename ft::iterator<Category, T>::difference_type operator-
+    (const ft::iterator<Category, T> first, const ft::iterator<Category, T> second) {
 	return (first.getPtr() - second.getPtr());
     }
 }

@@ -1,6 +1,12 @@
-SRCS	=
+SRCS	=	main_test.cpp \
 
-HEADER	=
+HEADER	=	utility/enable_if.hpp \
+		utility/equal.hpp \
+		utility/pair.hpp \
+		iterator/iterator.hpp \
+		iterator/iterator_traits.hpp \
+		iterator/reverse_iterator.hpp \
+		Vector.hpp \
 
 OBJS    =       ${SRCS:.cpp=.o}
 
@@ -8,7 +14,7 @@ CXX      =       c++
 
 CXXFLAGS   =       -Wall -Wextra -Werror -std=c++98
 
-NAME    =
+NAME    =	ft_container_test
 
 RM      =       rm -rf
 

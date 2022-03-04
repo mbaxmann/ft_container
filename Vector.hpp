@@ -387,17 +387,13 @@ namespace   ft
 		}
 
 		    template<class InputIterator>
-		    void insert(iterator position, InputIterator first, InputIterator last) {
-			size_type ite_len = 0;
+		    void insert(iterator position, InputIterator first, InputIterator last,
+		    typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+		    InputIterator>::type* = NULL) {
+			size_type ite_len = dist(first, last);
 			size_type len = &(*position) - _M_start;
-			iterator tmp = first;
 
-			while (&(*tmp) != &(*last))
-			{
-			    ++ite_len;
-			    ++first;
-			}
-			if (len <= size_type(_M_end_of_storage - _M_end))
+			if (size_type(_M_end_of_storage - _M_end) >= ite_len)
 			{
 			    for (size_type i = 0; i < this->size() - len; i++)
 				_alloc.construct(_M_end - i + (ite_len - 1), *(_M_end - 1));
@@ -500,10 +496,10 @@ namespace   ft
 			return (_alloc);
 		    }
 	    private:
+		allocator_type	    _alloc;
 		pointer		    _M_start;
 		pointer		    _M_end;
 		pointer		    _M_end_of_storage;
-		allocator_type	    _alloc;
 
 		template<class InputIterator>
 		difference_type dist(InputIterator first, InputIterator last) {

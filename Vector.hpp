@@ -222,7 +222,9 @@ namespace   ft
 		 *Modifiers function related
 		 */
 		template <class InputIterator>
-		void assign(InputIterator first, InputIterator last) {
+		void assign(InputIterator first, InputIterator last,
+		typename ft::enable_if<!ft::is_integral<InputIterator>::
+		value, InputIterator>::type* = NULL) {
 		    size_type	length = dist(first, last);
 
 		    this->clear();
@@ -241,7 +243,7 @@ namespace   ft
 			pointer	_M_end_new = pointer();
 			pointer _M_end_of_storage_new = pointer();
 
-			_M_start_new = _allocallocate(length);
+			_M_start_new = _alloc.allocate(length);
 			_M_end_new = _M_start_new;
 			_M_end_of_storage = _M_start_new + length;
 			while (*first != *last)
@@ -304,7 +306,7 @@ namespace   ft
 
 		iterator insert(iterator position, const value_type &val) {
 		    size_type len = &(*position) - _M_start;
-		    if (this->size() + 1 < _M_end_of_storage)
+		    if (this->size() + 1 < size_type(_M_end_of_storage))
 		    {
 			for (size_type i = 0; i < len; i++)
 			    _alloc.construct(_M_end - i, *(_M_end - i - 1));
@@ -372,14 +374,14 @@ namespace   ft
 			_M_end_new = _M_start_new + this->size() + n;
 			_M_end_of_storage = _M_start_new + capacity_new;
 			for (int i = 0; i < (&(*position) - _M_start); i++)
-			    _alloc.construc(_M_start_new + i, *(_M_start + i));
+			    _alloc.construct(_M_start_new + i, *(_M_start + i));
 			for (size_type j = 0; j < n; j++)
 			    _alloc.construct(_M_start_new + len + j, val);
 			for (size_type k = 0; k < (this->size() - len); k++)
 			    _alloc.construct(_M_end_new - k - 1, *(_M_end - k - 1));
 			for (size_type l = 0; l < this->size(); l++)
 			    _alloc.destroy(_M_start + l);
-			_alloc.deallcate(_M_start, this->capacity());
+			_alloc.deallocate(_M_start, this->capacity());
 			_M_start = _M_start_new;
 			_M_end = _M_end_new;
 			_M_end_of_storage = _M_end_of_storage_new;
@@ -396,7 +398,7 @@ namespace   ft
 			if (size_type(_M_end_of_storage - _M_end) >= ite_len)
 			{
 			    for (size_type i = 0; i < this->size() - len; i++)
-				_alloc.construct(_M_end - i + (ite_len - 1), *(_M_end - 1));
+				_alloc.construct(_M_end - i + (ite_len - 1), *(_M_end - i - 1));
 			    _M_end += ite_len;
 			    while (&(*first) != &(*last))
 			    {
@@ -440,8 +442,8 @@ namespace   ft
 			{
 			    for (int i = 0; i < _M_end - &(*position) - 1; i++)
 			    {
-				_alloc.construct(&(*position) + i, *position + i + 1);
-				_alloc.destory(&(*position) + i + 1);
+				_alloc.construct(&(*position) + i, *(&(*position) + i + 1));
+				_alloc.destroy(&(*position) + i + 1);
 			    }
 			}
 			--_M_end;
@@ -458,7 +460,7 @@ namespace   ft
 			}
 			for (int i = 0; i < _M_end - &(*last); i++)
 			{
-			    _alloc.construct(ret + i, *last + i);
+			    _alloc.construct(ret + i, *(&(*last) + i));
 			    _alloc.destroy(&(*last) + i);
 			}
 			_M_end -= (&(*last) - ret);
@@ -470,7 +472,7 @@ namespace   ft
 			    return ;
 			pointer	_M_start_stock = x._M_start;
 			pointer	_M_end_stock = x._M_end;
-			pointer	_M_end_of_storage_stock = x._end_of_storage;
+			pointer	_M_end_of_storage_stock = x._M_end_of_storage;
 			allocator_type _alloc_stock = x._alloc;
 			x._M_start = this->_M_start;
 			x._M_end = this->_M_end;

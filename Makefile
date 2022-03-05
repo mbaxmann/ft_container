@@ -1,4 +1,4 @@
-SRCS	=	main_test.cpp \
+SRCS	=	tester/main_test.cpp \
 
 HEADER	=	utility/enable_if.hpp \
 		utility/equal.hpp \

@@ -58,7 +58,7 @@ namespace   ft
 			typename ft::enable_if
 			<!ft::is_integral<InputIterator>::value, InputIterator>::type * = NULL) 
 			: _alloc(alloc) {
-		    difference_type n = dist(first, last);
+		    difference_type n = ft::dist(first, last);
 		    _M_start = _alloc.allocate(n);
 		    _M_end = _M_start;
 		    _M_end_of_storage = _M_start + n;
@@ -225,7 +225,7 @@ namespace   ft
 		void assign(InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::
 		value, InputIterator>::type* = NULL) {
-		    size_type	length = dist(first, last);
+		    size_type	length = ft::dist(first, last);
 
 		    this->clear();
 		    if (length <= size_type(_M_end_of_storage - _M_start))
@@ -503,16 +503,6 @@ namespace   ft
 		pointer		    _M_end;
 		pointer		    _M_end_of_storage;
 
-		template<class InputIterator>
-		difference_type dist(InputIterator first, InputIterator last) {
-		    difference_type ret = 0;
-		    while (first != last)
-		    {
-			++first;
-			++ret;
-		    }
-		    return (ret);
-		}
     };
 
     template<class T, class Alloc>

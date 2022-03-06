@@ -1,12 +1,18 @@
-SRCS	=	tester/main_test.cpp \
+SRCS	=	tester/main.cpp \
+		tester/ft_vector.cpp \
+		tester/ft_map.cpp \
 
-HEADER	=	utility/enable_if.hpp \
+HEADER	=	tester/main.hpp \
+		utility/enable_if.hpp \
 		utility/equal.hpp \
 		utility/pair.hpp \
+		utility/binary_search_tree.hpp \
 		iterator/iterator.hpp \
 		iterator/iterator_traits.hpp \
 		iterator/reverse_iterator.hpp \
+		iterator/BST_iterator.hpp \
 		Vector.hpp \
+		Map.hpp \
 
 OBJS    =       ${SRCS:.cpp=.o}
 

@@ -1,10 +1,6 @@
 #include "../Vector.hpp"
+#include "main.hpp"
 #include <iostream>
-
-#define GREEN	"\x1B[32m"
-#define	RED	"\x1B[31m"
-#define BLUE	"\x1B[34m"
-#define CYAN	"\x1B[36m"
 
 template<typename T>
 static void display_vector(ft::vector<T> vec) {
@@ -15,7 +11,7 @@ static void display_vector(ft::vector<T> vec) {
     std::cout << std::endl;
 }
 
-int main(void)
+int ft_vector(void)
 {
     //CONSTRUCTOR TESTING
     std::cout << BLUE << "Testing all vector constructor:" << std::endl;

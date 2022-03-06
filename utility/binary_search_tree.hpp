@@ -1,6 +1,11 @@
 #ifndef BINARY_SEARCH_TREE
 # define BINARY_SEARCH_TREE
 
+#include <cwchar>
+#include <memory>
+#include "../iterator/BST_iterator.hpp"
+#include "pair.hpp"
+
 namespace ft
 {
     template<typename T>
@@ -18,7 +23,7 @@ namespace ft
 		value(),
 		parent(NULL),
 		left(NULL),
-		right(NULL),
+		right(NULL)
 	    {}
 
 	    node(const value_type &val, node *parent = NULL,
@@ -26,21 +31,21 @@ namespace ft
 		value(val),
 		parent(parent),
 		left(left),
-		right(right),
+		right(right)
 	    {}
 
 	    node(node *parent = NULL, node *left = NULL, node *right = NULL) :
 		value(),
 		parent(parent),
 		left(left),
-		right(right),
+		right(right)
 	    {}
 
 	    node(const node *cp) :
 		value(cp.value),
 		parent(cp.parent),
 		left(cp.left),
-		right(cp.right),
+		right(cp.right)
 	    {}
 
 	    virtual ~node(void) {}
@@ -62,18 +67,24 @@ namespace ft
 	    }
     };
 
-    template<class T, class alloc = std::allocator<T>, class node = node<T> >
+    template<class T, class Compare = ft::less<T>, class Node = node<T>,
+	    class alloc = std::allocator<T>, class Node_alloc = std::allocator<Node> >
     class BST
     {
 	public:
 	    typedef T				    value_type;
-	    typedef std::allocator<node>	    node_alloc;
+	    typedef Node_alloc			    node_alloc;
 	    typedef size_t			    size_type;
-	    typedef node *			    nodePtr;
+	    typedef Node *			    nodePTR;
+	    typedef ft::BST_iterator<Node, Compare>	    iterator;
+	    typedef ft::BST_iterator<Node, Compare>	     const_iterator;
+
+	    nodePTR	_last_node;
+	    node_alloc	_node_alloc;
 
 	    BST(void) {
 		_last_node = _node_alloc.allocate(1);
-		_node_alloc.construct(_last_node, node(_last_node, _last_node, _last_node));
+		_node_alloc.construct(_last_node, Node(_last_node, _last_node, _last_node));
 	    }
 
 	    ~BST(void) {
@@ -94,7 +105,7 @@ namespace ft
 		    if (key == to_add.first)
 			return (ft::make_pair(iterator(current_node, _last_node), false));
 		    prev_node = current_node;
-		    if (to_add.first > curkey)
+		    if (to_add.first > key)
 		    {
 			side = 'R';
 			current_node = current_node->right;
@@ -105,15 +116,15 @@ namespace ft
 			current_node = current_node->left;
 		    }
 		}
-		_node_alloc.construct(new_node, node(to_add, prev_node, _last_node, _last_node));
+		_node_alloc.construct(new_node, Node(to_add, prev_node, _last_node, _last_node));
 		if (prev_node == _last_node)
 		    _last_node->parent = new_node;
 		else if (side == 'R')
 		    prev_node->right = new_node;
 		else
 		    prev_node->left = new_node;
-		_last_node->left = getLowestNode(_last->node->parent);
-		_last_node->right = getHighestNode(_last->node->parent);
+		_last_node->left = getLowestNode(_last_node->parent);
+		_last_node->right = getHighestNode(_last_node->parent);
 		_last_node->value.first += 1;
 		return (ft::make_pair(iterator(new_node, _last_node), true));
 	    }
@@ -151,9 +162,6 @@ namespace ft
 	    }
 
 	private:
-	    nodePTR	_last_node;
-	    node_alloc	_node_alloc;
-
 	    nodePTR getLowestNode(nodePTR root) {
 		while (root != _last_node && root->left != _last_node)
 		    root = root->left;
@@ -179,7 +187,7 @@ namespace ft
 		else
 		    _last_node->parent = new_node;
 		_last_node->left = getLowestNode(_last_node->parent);
-		_last_node->right = getHighestNode(_lats_node->parent);
+		_last_node->right = getHighestNode(_last_node->parent);
 		_last_node->value.first -= 1;
 		new_node->parent = node->parent;
 		_node_alloc.destroy(node);
@@ -217,7 +225,7 @@ namespace ft
 		_last_node->left = getLowestNode(_last_node->parent);
 		_last_node->right = getHighestNode(_last_node->parent);
 		_last_node->value.first -= 1;
-		_node_alloc.destory(to_remove);
+		_node_alloc.destroy(to_remove);
 		_node_alloc.deallocate(to_remove, 1);
 	    }
 
@@ -232,11 +240,11 @@ namespace ft
 		    replaceChildren(node, successor);
 		}
 		else if (node->left != _last_node)
-		    _replaceParent(node, node->left);
+		    replaceParent(node, node->left);
 		else if (node->right != _last_node)
-		    _replaceParent(node, node->right);
+		    replaceParent(node, node->right);
 		else
-		    _replaceParent(node, _last_node);
+		    replaceParent(node, _last_node);
 	    }
     };
 }

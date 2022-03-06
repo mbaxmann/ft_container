@@ -1,17 +1,18 @@
 #ifndef BST_ITERATOR_HPP
-# define BETS_ITERATOR_HPP
+# define BST_ITERATOR_HPP
 
 #include "iterator.hpp"
 
 namespace ft
 {
-    template<typename T>
+    
+    template<typename T, class Compare>
     class BST_iterator : ft::iterator<ft::bidirectional_iterator_tag, T>
     {
 	public:
 	    typedef typename T::value_type	    value_type;
 	    typedef typename ft::iterator
-	    <ft::bidirectinal_iterator_tag, value_type>::iterator_category  iterator_category;
+	    <ft::bidirectional_iterator_tag, value_type>::iterator_category  iterator_category;
 	    typedef typename ft::iterator
 	    <ft::bidirectional_iterator_tag, value_type>::difference_type   difference_type;
 	    typedef typename ft::iterator
@@ -19,17 +20,25 @@ namespace ft
 	    typedef typename ft::iterator
 	    <bidirectional_iterator_tag, value_type>::reference reference;
 
-	    BST_iterator(void) :
+	    T	    *_node;
+	    T	    *_last_node;
+	    Compare _comp;
+
+	    BST_iterator(const Compare &comp = Compare()) :
 		_node(),
-		_last_node() {}
+		_last_node(),
+		_comp(comp) {}
 
-	    BST_iterator(T *node, T *last_node) :
+	    BST_iterator(T *node, T *last_node, const Compare &comp = Compare()) :
 		_node(node),
-		_last_node(last_node) {}
+		_last_node(last_node),
+		_comp(comp) {}
 
-	    BST_iterator(const BST_iterator &cp) :
+	   BST_iterator(const BST_iterator &cp) :
 		_node(cp._node),
-		_last_node(cp._last_node) {}
+		_last_node(cp._last_node),
+		_comp() {}
+
 	    virtual ~BST_iterator(void) {}
 
 	    BST_iterator &operator=(const BST_iterator &cp) {
@@ -37,15 +46,16 @@ namespace ft
 		    return (*this);
 		this->_node = cp._node;
 		this->_last_node = cp._last_node;
+		this->_comp = cp._comp;
 		return (*this);
 	    }
 
 	    bool    operator==(const BST_iterator &ite) {
-		return (this->_node == ite->_node);
+		return (this->_node == ite._node);
 	    }
 
 	    bool    operator!=(const BST_iterator &ite) {
-		return (!(this->_node == ite->_node));
+		return (!(this->_node == ite._node));
 	    }
 
 	    reference	operator*() const {
@@ -59,12 +69,12 @@ namespace ft
 	    BST_iterator &operator++(void) {
 		T   *current = _node;
 
-		if (_current->right == _last_node)
+		if (current->right == _last_node)
 		{
 		    current = _node->parent;
-		    while (current != _last_node && (current->value.first < _node->value.first))
-			cursor = cursor->parent;
-		    _node = cursor;
+		    while (current != _last_node && _comp(current->value.first, _node->value.first))
+			current = current->parent;
+		    _node = current;
 		}
 		else if (current != _last_node)
 		{
@@ -88,12 +98,12 @@ namespace ft
 	    BST_iterator &operator--(void) {
 		T   *current = _node;
 
-		if (_current->left == _last_node)
+		if (current->left == _last_node)
 		{
 		    current = _node->parent;
-		    while (current != _last_node && (current->value.first > _node->value.first))
-			cursor = cursor->parent;
-		    _node = cursor;
+		    while (current != _last_node && _comp(current->value.first, _node->value.first))
+			current = current->parent;
+		    _node = current;
 		}
 		else if (current != _last_node)
 		{
@@ -108,38 +118,12 @@ namespace ft
 		return (*this);
 	    }
 
-	    BST_iterator operator++(int) {
+	    BST_iterator operator--(int) {
 		BST_iterator tmp(*this);
 		operator--();
 		return (tmp);
 	    }
-	private:
-	    T	*_node;
-	    T	*_last_node;
     };
 }
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

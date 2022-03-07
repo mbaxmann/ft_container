@@ -1,6 +1,7 @@
 SRCS	=	tester/main.cpp \
 		tester/ft_vector.cpp \
 		tester/ft_map.cpp \
+		tester/std_map.cpp \
 
 HEADER	=	tester/main.hpp \
 		utility/enable_if.hpp \

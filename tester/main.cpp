@@ -7,6 +7,8 @@ void	execute_cmd(std::string cmd)
 	ft_vector();
     else if (!cmd.compare("ft_map"))
 	ft_map();
+    else if (!cmd.compare("map"))
+	std_map();
 }
 
 int main(void)

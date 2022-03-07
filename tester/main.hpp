@@ -8,5 +8,6 @@
 
 int ft_vector(void);
 int ft_map(void);
+int std_map(void);
 
 #endif

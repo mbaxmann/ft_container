@@ -129,7 +129,7 @@ namespace ft
 		if (tmp == this->end())
 		    this->insert(ft::make_pair(k, mapped_type()));
 		tmp = this->find(k);
-		return (tmp->second);
+		return ((*tmp).second);
 	    }
 
 	    pair<iterator, bool> insert(const value_type &val) {
@@ -154,7 +154,7 @@ namespace ft
 	    }
 
 	    void erase(iterator position) {
-		return (this->erase((*position).first));
+		this->erase((*position).first);
 	    }
 
 	    size_type erase(const key_type &k) {
@@ -193,13 +193,18 @@ namespace ft
 			(ft::make_pair(k, mapped_type())), _tree._last_node));
 	    }
 
+	    const_iterator find(const key_type &k) const {
+		return (const_iterator(_tree.searchKey
+			(ft::make_pair(k, mapped_type())), _tree._last_node));
+	    }
+
 	    size_type count(const key_type &k) const {
 		const_iterator begin = this->begin();
 		const_iterator end = this->end();
 
 		while (begin != end)
 		{
-		    if (begin->first == k)
+		    if ((*begin).first == k)
 			return (1);
 		    ++begin;
 		}
@@ -212,7 +217,7 @@ namespace ft
 
 		while (begin != end)
 		{
-		    if (_comp(begin->first, k) == false)
+		    if (_comp((*begin).first, k) == false)
 			break;
 		    ++begin;
 		}
@@ -229,7 +234,7 @@ namespace ft
 
 		while (begin != end)
 		{
-		    if (_comp(begin->first, k))
+		    if (_comp(k, (*begin).first))
 			break;
 		    ++begin;
 		}
@@ -246,6 +251,10 @@ namespace ft
 
 	    ft::pair<iterator, iterator> equal_range(const key_type &k) {
 		return (ft::make_pair(this->lower_bound(k), this->upper_bound(k)));
+	    }
+
+	    allocator_type get_allocator() const {
+		return (_alloc);
 	    }
 	private:
 	    allocator_type		    _alloc;

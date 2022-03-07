@@ -69,14 +69,16 @@ namespace ft
 	    BST_iterator &operator++(void) {
 		T   *current = _node;
 
-		if (current->right == _last_node)
+		if (_node->right == _last_node)
 		{
 		    current = _node->parent;
 		    while (current != _last_node && _comp(current->value.first, _node->value.first))
 			current = current->parent;
 		    _node = current;
 		}
-		else if (current != _last_node)
+		else if (current == _last_node)
+		    _node = _last_node->right;
+		else
 		{
 		    current = _node->right;
 		    if (current == _last_node->parent && current->right == _last_node)
@@ -98,14 +100,17 @@ namespace ft
 	    BST_iterator &operator--(void) {
 		T   *current = _node;
 
-		if (current->left == _last_node)
+		if (_node->left == _last_node)
 		{
 		    current = _node->parent;
-		    while (current != _last_node && _comp(current->value.first, _node->value.first))
+		    while (current != _last_node &&
+			    !_comp(current->value.first, _node->value.first))
 			current = current->parent;
 		    _node = current;
 		}
-		else if (current != _last_node)
+		else if (current == _last_node)
+		    _node = _last_node->right;
+		else
 		{
 		    current = _node->left;
 		    if (current == _last_node->parent && current->left == _last_node)

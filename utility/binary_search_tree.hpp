@@ -5,9 +5,25 @@
 #include <memory>
 #include "../iterator/BST_iterator.hpp"
 #include "pair.hpp"
+#include "enable_if.hpp"
 
 namespace ft
 {
+    static class my_nullptr
+    {
+	public:
+	    template<class T>
+	    operator T*() const {
+		return (0);
+	    }
+	    template<class C, class T>
+	    operator T C::*()const {
+		return (0);
+	    }
+	private:
+	    void operator&() const;
+    } my_nullptr = {};
+
     template<typename T>
     class   node
     {
@@ -21,20 +37,20 @@ namespace ft
 
 	    node(void) :
 		value(),
-		parent(NULL),
-		left(NULL),
-		right(NULL)
+		parent(my_nullptr),
+		left(my_nullptr),
+		right(my_nullptr)
 	    {}
 
-	    node(const value_type &val, node *parent = NULL,
-		    node *left = NULL, node *right = NULL) :
+	    node(const value_type &val, node *parent = my_nullptr,
+		    node *left = my_nullptr, node *right = my_nullptr) :
 		value(val),
 		parent(parent),
 		left(left),
 		right(right)
 	    {}
 
-	    node(node *parent = NULL, node *left = NULL, node *right = NULL) :
+	    node(node *parent = my_nullptr, node *left = my_nullptr, node *right = my_nullptr) :
 		value(),
 		parent(parent),
 		left(left),
@@ -67,7 +83,7 @@ namespace ft
 	    }
     };
 
-    template<class T, class Compare = ft::less<T>, class Node = node<T>,
+    template<class T, class Compare = ft::less<T>, class Node = ft::node<T>,
 	    class alloc = std::allocator<T>, class Node_alloc = std::allocator<Node> >
     class BST
     {
@@ -82,7 +98,8 @@ namespace ft
 	    nodePTR	_last_node;
 	    node_alloc	_node_alloc;
 
-	    BST(void) {
+	    BST(const node_alloc &node_alloc_init = node_alloc()) :
+		_node_alloc(node_alloc_init) {
 		_last_node = _node_alloc.allocate(1);
 		_node_alloc.construct(_last_node, Node(_last_node, _last_node, _last_node));
 	    }
@@ -140,7 +157,7 @@ namespace ft
 		{
 		    if (node->value.first == to_find.first)
 			return (node);
-		    else if (node->value.first > to_find.first)
+		    if (node->value.first > to_find.first)
 			node = node->left;
 		    else
 			node = node->right;
@@ -151,7 +168,7 @@ namespace ft
 	    void    swap(BST &second) {
 		nodePTR	    stock = this->_last_node;
 
-		if (*this == second)
+		if (this == &second)
 		    return ;
 		this->_last_node = second._last_node;
 		second._last_node = stock;
@@ -179,7 +196,7 @@ namespace ft
 		{
 		    if (_last_node->parent == node)
 			_last_node->parent = new_node;
-		    else if (node == node->parent->left)
+		    if (node == node->parent->left)
 			node->parent->left = new_node;
 		    else
 			node->parent->right = new_node;

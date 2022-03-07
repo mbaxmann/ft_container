@@ -76,8 +76,8 @@ namespace ft
 	    typedef Node_alloc			    node_alloc;
 	    typedef size_t			    size_type;
 	    typedef Node *			    nodePTR;
-	    typedef ft::BST_iterator<Node, Compare>	    iterator;
-	    typedef ft::BST_iterator<Node, Compare>	     const_iterator;
+	    typedef ft::BST_iterator<Node, Compare>		iterator;
+	    typedef ft::BST_const_iterator<Node, Compare>	const_iterator;
 
 	    nodePTR	_last_node;
 	    node_alloc	_node_alloc;

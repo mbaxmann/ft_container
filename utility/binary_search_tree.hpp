@@ -9,21 +9,6 @@
 
 namespace ft
 {
-    static class my_nullptr
-    {
-	public:
-	    template<class T>
-	    operator T*() const {
-		return (0);
-	    }
-	    template<class C, class T>
-	    operator T C::*()const {
-		return (0);
-	    }
-	private:
-	    void operator&() const;
-    } my_nullptr = {};
-
     template<typename T>
     class   node
     {
@@ -37,27 +22,27 @@ namespace ft
 
 	    node(void) :
 		value(),
-		parent(my_nullptr),
-		left(my_nullptr),
-		right(my_nullptr)
+		parent(NULL),
+		left(NULL),
+		right(NULL)
 	    {}
 
-	    node(const value_type &val, node *parent = my_nullptr,
-		    node *left = my_nullptr, node *right = my_nullptr) :
+	    node(const value_type &val, node *parent = NULL,
+		    node *left = NULL, node *right = NULL) :
 		value(val),
 		parent(parent),
 		left(left),
 		right(right)
 	    {}
 
-	    node(node *parent = my_nullptr, node *left = my_nullptr, node *right = my_nullptr) :
+	    node(node *parent = NULL, node *left = NULL, node *right = NULL) :
 		value(),
 		parent(parent),
 		left(left),
 		right(right)
 	    {}
 
-	    node(const node *cp) :
+	    node(const node &cp) :
 		value(cp.value),
 		parent(cp.parent),
 		left(cp.left),
@@ -192,6 +177,7 @@ namespace ft
 	    }
 
 	    void replaceParent(nodePTR node, nodePTR new_node) {
+
 		if (node->parent != _last_node)
 		{
 		    if (_last_node->parent == node)
@@ -206,7 +192,8 @@ namespace ft
 		_last_node->left = getLowestNode(_last_node->parent);
 		_last_node->right = getHighestNode(_last_node->parent);
 		_last_node->value.first -= 1;
-		new_node->parent = node->parent;
+		if (new_node != _last_node)
+		    new_node->parent = node->parent;
 		_node_alloc.destroy(node);
 		_node_alloc.deallocate(node, 1);
 	    }

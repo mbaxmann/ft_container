@@ -14,6 +14,9 @@ static void display_map(std::map<key, T> map) {
 
 int std_map(void)
 {
+    struct timeval begin;
+    struct timeval end;
+    gettimeofday(&begin, 0);
     //CONSTRUCTOR TESTING
     std::cout << BLUE << "Testing all map constructor:" << std::endl;
     std::map<int, std::string> map_2;
@@ -111,6 +114,7 @@ int std_map(void)
     std::cout << GREEN <<
     value_cp(std::make_pair(-666, "nop") , std::make_pair(33, "test")) << std::endl;
     std::cout << CYAN << "map_1[5] : " << GREEN << map_1[5] << std::endl;
+    std::cout << CYAN << "map_1[4] : " << GREEN << map_1[4] << std::endl;
     std::cout << CYAN << "map_2[88] : " << GREEN << map_2[88] << std::endl << std::endl;
     //END OF KEY_COMP, VALUE_COMP, OPERATOR[]
     
@@ -128,6 +132,9 @@ int std_map(void)
     std::cout << CYAN << "Lowerbound of k = 54: " << GREEN << (*(map_2.lower_bound(54))).second << std::endl;
     std::cout << CYAN << "Upperbound of k = 54: " << GREEN << (*(map_2.upper_bound(54))).second << std::endl;
     std::cout << CYAN << "map_2.equal_range(60) : " << GREEN << (*(map_2.equal_range(60)).first).first << std::endl;
+    
+    gettimeofday(&end, 0);
+    std::cout << "Time: " << (end.tv_usec - begin.tv_usec) << std::endl;
     //END
     return (0);
 }

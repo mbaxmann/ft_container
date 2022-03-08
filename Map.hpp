@@ -2,6 +2,7 @@
 # define MAP_HPP
 
 #include <cwchar>
+#include <iostream>
 #include "utility/binary_search_tree.hpp"
 #include "utility/enable_if.hpp"
 #include "utility/pair.hpp"
@@ -147,8 +148,7 @@ namespace ft
 		difference_type n = ft::dist(first, last);
 		while (n)
 		{
-		    this->insert(*first);
-		    ++first;
+		    this->insert(*(first++));
 		    --n;
 		}
 	    }
@@ -166,10 +166,7 @@ namespace ft
 
 	    void erase(iterator first, iterator last) {
 		while (first != last)
-		{
-		    this->erase((*first).first);
-		    ++first;
-		}
+		    this->erase((*(first++)).first);
 	    }
 
 	    void swap(map &x) {

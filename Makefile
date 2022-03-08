@@ -1,7 +1,10 @@
 SRCS	=	tester/main.cpp \
 		tester/ft_vector.cpp \
+		tester/std_vector.cpp \
 		tester/ft_map.cpp \
 		tester/std_map.cpp \
+		tester/ft_stack.cpp \
+		tester/std_stack.cpp \
 
 HEADER	=	tester/main.hpp \
 		utility/enable_if.hpp \
@@ -19,7 +22,7 @@ OBJS    =       ${SRCS:.cpp=.o}
 
 CXX      =       c++
 
-CXXFLAGS   =       -Wall -Wextra -Werror -std=c++98 -g
+CXXFLAGS   =       -Wall -Wextra -Werror -std=c++98
 
 NAME    =	ft_container_test
 

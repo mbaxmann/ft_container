@@ -6,8 +6,13 @@
 #define BLUE	"\x1B[34m"
 #define CYAN	"\x1B[36m"
 
+#include <sys/time.h>
+
 int ft_vector(void);
+int std_vector(void);
 int ft_map(void);
 int std_map(void);
+int ft_stack(void);
+int std_stack(void);
 
 #endif

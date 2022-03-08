@@ -84,9 +84,21 @@ namespace ft
 	return (first.base() == second.base());
     }
 
+    template <class iteratorL, class iteratorR>
+    bool operator==
+    (const reverse_iterator<iteratorL> &first, const reverse_iterator<iteratorR> &second) {
+	return (first.base() == second.base());
+    }
+
     template <class iterator>
     bool operator!=
     (const reverse_iterator<iterator> &first, const reverse_iterator<iterator> &second) {
+	return (first.base() != second.base());
+    }
+
+    template <class iteratorL, class iteratorR>
+    bool operator!=
+    (const reverse_iterator<iteratorL> &first, const reverse_iterator<iteratorR> &second) {
 	return (first.base() != second.base());
     }
 
@@ -96,9 +108,21 @@ namespace ft
 	return (first.base() > second.base());
     }
 
+    template <class iteratorL, class iteratorR>
+    bool operator<
+    (const reverse_iterator<iteratorL> &first, const reverse_iterator<iteratorR> &second) {
+	return (first.base() > second.base());
+    }
+
     template <class iterator>
     bool operator<=
     (const reverse_iterator<iterator> &first, const reverse_iterator<iterator> &second) {
+	return (first.base() >= second.base());
+    }
+
+    template <class iteratorL, class iteratorR>
+    bool operator<=
+    (const reverse_iterator<iteratorL> &first, const reverse_iterator<iteratorR> &second) {
 	return (first.base() >= second.base());
     }
 
@@ -108,9 +132,21 @@ namespace ft
 	return (first.base() < second.base());
     }
 
+    template <class iteratorL, class iteratorR>
+    bool operator>
+    (const reverse_iterator<iteratorL> &first, const reverse_iterator<iteratorR> &second) {
+	return (first.base() < second.base());
+    }
+
     template <class iterator>
     bool operator>=
     (const reverse_iterator<iterator> &first, const reverse_iterator<iterator> &second) {
+	return (first.base() <= second.base());
+    }
+
+    template <class iteratorL, class iteratorR>
+    bool operator>=
+    (const reverse_iterator<iteratorL> &first, const reverse_iterator<iteratorR> &second) {
 	return (first.base() <= second.base());
     }
 
@@ -123,6 +159,12 @@ namespace ft
     template <class iterator>
     typename reverse_iterator<iterator>::difference_type operator-
     (const reverse_iterator<iterator> &first, const reverse_iterator<iterator> &second) {
+	return (first.base() - second.base());
+    }
+
+    template <class iteratorL, class iteratorR>
+    bool operator-
+    (const reverse_iterator<iteratorL> &first, const reverse_iterator<iteratorR> &second) {
 	return (first.base() - second.base());
     }
 }

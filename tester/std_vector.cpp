@@ -1,28 +1,28 @@
-#include "../Vector.hpp"
+#include <vector>
 #include "main.hpp"
 #include <iostream>
 
 template<typename T>
-static void display_vector(ft::vector<T> vec) {
-    typename ft::vector<T>::iterator ite_1 = vec.begin();
-    typename ft::vector<T>::iterator ite_2 = vec.end();
+static void display_vector(std::vector<T> vec) {
+    typename std::vector<T>::iterator ite_1 = vec.begin();
+    typename std::vector<T>::iterator ite_2 = vec.end();
     for (int i = 0; (ite_1 + i) != ite_2; i++)
 	    std::cout << GREEN << *(ite_1 + i) << " ";
     std::cout << std::endl;
 }
 
-int ft_vector(void)
+int std_vector(void)
 {
     struct timeval begin;
     struct timeval end;
     gettimeofday(&begin, 0);
     //CONSTRUCTOR TESTING
     std::cout << BLUE << "Testing all vector constructor:" << std::endl;
-    ft::vector<int> vector_1(4, 25);
-    ft::vector<int> vector_2(vector_1);
-    ft::vector<int> vector_3;
-    ft::vector<int>
-    vector_4(ft::iterator<ft::input_iterator_tag, int>, ft::iterator<ft::input_iterator_tag, int>);
+    std::vector<int> vector_1(4, 25);
+    std::vector<int> vector_2(vector_1);
+    std::vector<int> vector_3;
+    std::vector<int> 
+    vector_4(std::iterator<std::input_iterator_tag, int>, std::iterator<std::input_iterator_tag, int>);
     std::cout << GREEN << "Success" << std::endl << std::endl;
     //END OF CONSTRUCTOR TESTING
 
@@ -37,8 +37,8 @@ int ft_vector(void)
     std::cout << CYAN << "Displaying vector using begin() to end()" << std::endl;
     display_vector(vector_2);
     std::cout << CYAN << "Displaying vector using rbegin() to rend()" << std::endl;
-    ft::vector<int>::reverse_iterator ite_1 = vector_2.rbegin();
-    ft::vector<int>::reverse_iterator ite_2 = vector_2.rend();
+    std::vector<int>::reverse_iterator ite_1 = vector_2.rbegin();
+    std::vector<int>::reverse_iterator ite_2 = vector_2.rend();
     for (; ite_1 != ite_2; ite_1++)
 	std::cout << GREEN << *ite_1 << " ";
     std::cout << std::endl << std::endl;
@@ -105,8 +105,6 @@ int ft_vector(void)
     vector_3.insert(vector_3.begin() + 5, 42);
     display_vector(vector_3);
     std::cout << CYAN << "Inserting 3 time the value 33 to vector_2 in 6 position" << std::endl;
-
-    std::cout << "TEST!!!!! " << vector_3.capacity() << std::endl;
     vector_3.insert(vector_3.begin() + 6, 3, 33);
     display_vector(vector_3);
     std::cout << CYAN << "Vector_1" << std::endl;
@@ -127,7 +125,7 @@ int ft_vector(void)
     std::cout << CYAN << "Vector_1" << std::endl;
     display_vector(vector_1);
     std::cout << CYAN << "Swaping vector_2 with vector_1 with the non member function" << std::endl;
-    ft::swap(vector_3, vector_1);
+    std::swap(vector_3, vector_1);
     std::cout << CYAN << "Vector_2" << std::endl;
     display_vector(vector_3);
     std::cout << CYAN << "Vector_1" << std::endl;
@@ -185,15 +183,15 @@ int ft_vector(void)
     std::cout << CYAN << "vector_2" << std::endl;
     display_vector(vector_3);
     //END OF OPERATOR TESTING
-    
+
     //ITERATOR
     std::cout << BLUE << "Testing iterator" << std::endl;
     std::cout << CYAN << "iterator it_1 = vector_1.begin()" << std::endl;
     std::cout << CYAN << "iterator it_2 = vector_2.begin()" << std::endl;
     std::cout << CYAN << "const_iterator it_3 = vector_1.begin()" << std::endl;
-    ft::vector<int>::iterator it_1 = vector_2.begin();
-    ft::vector<int>::iterator it_2 = vector_3.begin();
-    ft::vector<int>::const_iterator it_3 = vector_2.begin();
+    std::vector<int>::iterator it_1 = vector_2.begin();
+    std::vector<int>::iterator it_2 = vector_3.begin();
+    std::vector<int>::const_iterator it_3 = vector_2.begin();
     std::cout << CYAN << "it_1 == it_2 : " << GREEN << (it_1 == it_2) << std::endl;
     std::cout << CYAN << "it_3 == it_2 : " << GREEN << (it_3 == it_2) << std::endl;
 
@@ -211,6 +209,7 @@ int ft_vector(void)
 
     std::cout << CYAN << "it_1 >= it_2 : " << GREEN << (it_1 >= it_2) << std::endl;
     std::cout << CYAN << "it_3 >= it_2 : " << GREEN << (it_3 >= it_2) << std::endl;
+
     gettimeofday(&end, 0);
     std::cout << "Time: " << (end.tv_usec - begin.tv_usec) << std::endl;
     return (0);

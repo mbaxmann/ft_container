@@ -42,27 +42,27 @@ namespace ft
 
 	    template <class Tn, class ContainerN>
 	    friend bool operator==
-	    (const ft::stack<Tn, ContainerN>& lhs, const ft::stack<Tn, ContainerN>& rhs);
+	    (const ft::stack<Tn, ContainerN> &lhs, const ft::stack<Tn, ContainerN> &rhs);
 
 	    template <class Tn, class ContainerN>
 	    friend bool operator!=
-	    (const ft::stack<Tn, ContainerN>& lhs, const ft::stack<Tn, ContainerN>& rhs);
+	    (const ft::stack<Tn, ContainerN> &lhs, const ft::stack<Tn, ContainerN> &rhs);
 			
 	    template <class Tn, class ContainerN>
 	    friend bool operator<
-	    (const ft::stack<Tn, ContainerN>& lhs, const ft::stack<Tn, ContainerN>& rhs);
+	    (const ft::stack<Tn, ContainerN> &lhs, const ft::stack<Tn, ContainerN> &rhs);
 
 	    template <class Tn, class ContainerN>
 	    friend bool operator<=
-	    (const ft::stack<Tn, ContainerN>& lhs, const ft::stack<Tn, ContainerN>& rhs);
+	    (const ft::stack<Tn, ContainerN> &lhs, const ft::stack<Tn, ContainerN> &rhs);
 
 	    template <class Tn, class ContainerN>
 	    friend bool operator>
-	    (const ft::stack<Tn, ContainerN>& lhs, const ft::stack<Tn, ContainerN>& rhs);
+	    (const ft::stack<Tn, ContainerN> &lhs, const ft::stack<Tn, ContainerN> &rhs);
 
 	    template <class Tn, class ContainerN>
 	    friend bool operator>=
-	    (const ft::stack<Tn, ContainerN>& lhs, const ft::stack<Tn, ContainerN>& rhs);
+	    (const ft::stack<Tn, ContainerN> &lhs, const ft::stack<Tn, ContainerN> &rhs);
 	protected:
 		container_type c;
     };
